@@ -1,0 +1,8 @@
+services:
+  - type: web
+    name: bot-detection-gateway
+    runtime: python
+    plan: free
+    buildCommand: pip install -r requirements.txt && python pipeline.py
+    startCommand: gunicorn app:app --workers 1 --threads 4 --bind 0.0.0.0:$PORT
+    healthCheckPath: /
