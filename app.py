@@ -19,6 +19,8 @@ from pipeline import FEATURES, prepare_session, RAW_FILE, real_count
 
 CSV_FILE = "real_sessions.csv"
 DB_FILE = "users.db"
+REPORT_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                           "Bot_Detection_Mini_Project_Report.docx")
 OLD_USERS_FILE = "users.json"      # imported once if it exists
 DEMO_USERS = {"demo": "Demo@123", "admin": "Admin@123"}      # created on first run
 app = Flask(__name__)
@@ -288,7 +290,7 @@ details{margin-top:14px;font-size:13px;color:#555}
  <button id="bot">Simulate bot attack (straight line)</button>
  <button id="sel">Simulate Selenium bot (human-like moves)</button>
 </details>
-<p><a href="/users">User database</a> &nbsp;|&nbsp; <a href="/history">History</a> &nbsp;|&nbsp; <a href="/data">Training data</a></p></div>
+<p><a href="/users">User database</a> &nbsp;|&nbsp; <a href="/history">History</a> &nbsp;|&nbsp; <a href="/data">Training data</a> &nbsp;|&nbsp; <a href="/download/report">Download project report</a></p></div>
 <script>
 let moves=[], keys=[], clicks=[], scrolls=[], down={}, t0=performance.now();
 const now=()=>(performance.now()-t0)/1000;
@@ -579,6 +581,9 @@ th{background:#f3f4f6}button,.btn{background:#2563eb;color:#fff;border:0;border-
 small{color:#555}</style></head><body><div class="wrap">
 <a href="/">Back to login</a>
 <h2>Training data</h2>
+<div class="card"><h3>Project report</h3>
+ <p>Download the mini project report as a Word document.</p>
+ <a class="btn" href="/download/report">Download project report (.docx)</a></div>
 <div class="card"><h3>Real human sessions</h3>
  <p>Saved so far: <b>{{ n_real }}</b> &nbsp; <small>(files: real_raw.jsonl and real_sessions.csv)</small></p>
  <p><small>Collect more by ticking "I am a real person" on the login page before signing in.
@@ -800,6 +805,14 @@ def download():
     if not os.path.exists(CSV_FILE):
         abort(404)
     return send_file(CSV_FILE, as_attachment=True)
+
+
+@app.route("/download/report")
+def download_report():
+    if not os.path.isfile(REPORT_FILE):
+        abort(404, description="The project report is not available.")
+    return send_file(REPORT_FILE, as_attachment=True,
+                     download_name="Bot_Detection_Mini_Project_Report.docx")
 
 
 @app.route("/retrain", methods=["POST"])
