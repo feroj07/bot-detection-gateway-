@@ -243,20 +243,43 @@ def save_real(raw, feats):
 PAGE = """<!doctype html><html><head><meta charset="utf-8">
 <title>Secure Access</title>
 <style>
-body{font-family:Arial,sans-serif;background:#f1f3f6;display:flex;justify-content:center;padding-top:40px}
-.card{background:#fff;padding:30px;border-radius:10px;width:390px;box-shadow:0 2px 10px #0002}
-input[type=text],input[type=password]{width:100%;padding:10px;margin:8px 0;box-sizing:border-box}
-button{width:100%;padding:11px;margin-top:8px;border:0;border-radius:6px;color:#fff;font-size:15px;cursor:pointer}
-#go,#reg{background:#2563eb}#bot{background:#6b7280}#sel{background:#9333ea}
-.tabs{display:flex;margin:6px 0 14px}
-.tab{flex:1;padding:10px;text-align:center;cursor:pointer;border-bottom:3px solid #e5e7eb;color:#555}
-.tab.on{border-color:#2563eb;color:#2563eb;font-weight:bold}
+*{box-sizing:border-box}
+body{font-family:Inter,"Segoe UI",Arial,sans-serif;background:radial-gradient(ellipse at 15% 10%,#dceaff 0,transparent 36%),linear-gradient(135deg,#f5f8fc,#eaf0f8);display:flex;justify-content:center;align-items:flex-start;min-height:100vh;padding:48px 18px;color:#17233b}
+.card{background:rgba(255,255,255,.96);padding:34px;border:1px solid #e3eaf3;border-radius:18px;width:min(100%,440px);box-shadow:0 24px 70px #20385c1c}
+.card h2{margin:0 0 20px;font-size:27px;letter-spacing:-.6px;color:#14233d}
+input[type=text],input[type=password]{width:100%;padding:12px 14px;margin:9px 0;border:1px solid #d5deea;border-radius:9px;background:#fbfdff;font:inherit;color:#17233b;transition:border-color .18s,box-shadow .18s}
+input:focus{outline:none;border-color:#3979d6;box-shadow:0 0 0 3px #3979d61c}
+button{width:100%;padding:12px;margin-top:9px;border:0;border-radius:9px;color:#fff;font-size:15px;font-weight:650;cursor:pointer;transition:transform .15s,filter .15s,box-shadow .15s}
+button:hover{filter:brightness(1.05);transform:translateY(-1px);box-shadow:0 8px 18px #183b7026}
+#go,#reg{background:linear-gradient(135deg,#2867c7,#174b9b)}#bot{background:#52647d}#sel{background:#6751b8}
+.tabs{display:flex;margin:6px 0 18px;padding:4px;background:#f0f4f9;border-radius:10px}
+.tab{flex:1;padding:10px;text-align:center;cursor:pointer;border-radius:8px;color:#66758b;transition:background .15s,color .15s}
+.tab.on{background:#fff;color:#205db2;font-weight:700;box-shadow:0 2px 8px #183b7012}
 .pane{display:none}.pane.on{display:block}
-.save{background:#f0fdf4;border:1px solid #bbf7d0;border-radius:6px;padding:10px;margin-top:10px;font-size:13px}
-.err{background:#fee2e2;border:1px solid #fca5a5;color:#991b1b;border-radius:6px;padding:10px;margin-bottom:10px;font-size:14px}
-.good{background:#dcfce7;border:1px solid #86efac;color:#166534;border-radius:6px;padding:10px;margin:8px 0;font-size:14px}
+.save{background:#f2f7ff;border:1px solid #d8e6fa;border-radius:9px;padding:12px;margin-top:10px;font-size:13px;color:#34445d}
+.err{background:#fff1f0;border:1px solid #ffd1cd;color:#a52c27;border-radius:9px;padding:12px;margin-bottom:10px;font-size:14px}
+.good{background:#effaf4;border:1px solid #c8ecd6;color:#17643a;border-radius:9px;padding:12px;margin:8px 0;font-size:14px}
 .hp{position:absolute;left:-9999px;top:-9999px;height:0;width:0;overflow:hidden}
-details{margin-top:14px;font-size:13px;color:#555}
+details{margin-top:18px;padding:12px 14px;border:1px solid #e3eaf3;border-radius:10px;background:#f8fafd;font-size:13px;color:#526178}
+details summary{cursor:pointer;font-weight:650}
+.card p{line-height:1.55;color:#5a687d}
+.card a{color:#245fae;text-decoration:none}.card a:hover{text-decoration:underline}
+.card>p:last-child{padding-top:12px;border-top:1px solid #edf1f6;font-size:13px}
+small{color:#748197}
+@media(max-width:480px){body{padding:18px 12px}.card{padding:24px 20px;border-radius:14px}.card h2{font-size:24px}}
+body{background:#080b12;color:#e5e7eb}
+.card{background:#111827;border-color:#263247;box-shadow:0 24px 70px #0006}
+.card h2{color:#f3f6fb}
+input[type=text],input[type=password]{background:#0b1220;border-color:#334155;color:#e5e7eb}
+.tabs{background:#0b1220}
+.tab{color:#a7b3c5}.tab.on{background:#1b2739;color:#93c5fd;box-shadow:none}
+.save{background:#10231f;border-color:#1e493b;color:#d4e9df}
+.err{background:#351b20;border-color:#71323a;color:#fecaca}
+.good{background:#10271d;border-color:#24583a;color:#bbf7d0}
+details{background:#0d1421;border-color:#263247;color:#c2ccda}
+.card p{color:#b8c2d1}.card a{color:#93c5fd}
+.card>p:last-child{border-color:#263247}
+small{color:#9aa8bb}
 </style></head><body><div class="card">
 <h2>Secure Access</h2>
 {% if failed_msg %}<div class="err"><b>Login failed.</b> {{ failed_msg }}
@@ -265,7 +288,7 @@ details{margin-top:14px;font-size:13px;color:#555}
 
 <div class="pane on" id="p1">
  <div id="notice"></div>
- <p style="font-size:13px;color:#555;margin:0">Move your mouse and type normally. Demo account: <b>demo</b> / <b>Demo@123</b></p>
+ <p style="font-size:13px;color:#b8c2d1;margin:0">Move your mouse and type normally. Demo account: <b>demo</b> / <b>Demo@123</b></p>
  <input type="text" id="u" placeholder="Username" autocomplete="off">
  <input type="password" id="p" placeholder="Password" autocomplete="off">
  <div class="hp" aria-hidden="true"><label>Leave this empty
@@ -277,7 +300,7 @@ details{margin-top:14px;font-size:13px;color:#555}
 </div>
 
 <div class="pane" id="p2">
- <p style="font-size:13px;color:#555;margin:0">Create a new account, then sign in with it.</p>
+ <p style="font-size:13px;color:#b8c2d1;margin:0">Create a new account, then sign in with it.</p>
  <input type="text" id="ru" placeholder="Choose a username (3-20 letters, numbers, _)" autocomplete="off">
  <input type="password" id="rp" placeholder="Choose a password (at least 6 characters)" autocomplete="off">
  <input type="password" id="rp2" placeholder="Confirm password" autocomplete="off">
@@ -340,12 +363,24 @@ $('sel').onclick=()=>{
 </script></body></html>"""
 
 REGISTER = """<!doctype html><html><head><meta charset="utf-8"><title>Create account</title>
-<style>body{font-family:Arial,sans-serif;background:#f1f3f6;display:flex;justify-content:center;padding-top:60px}
-.card{background:#fff;padding:30px;border-radius:10px;width:380px;box-shadow:0 2px 10px #0002}
-input{width:100%;padding:10px;margin:8px 0;box-sizing:border-box}
-button{width:100%;padding:11px;margin-top:8px;border:0;border-radius:6px;background:#2563eb;color:#fff;font-size:15px;cursor:pointer}
-#msg{margin-top:12px;padding:10px;border-radius:6px;display:none}.ok{background:#dcfce7}.bad{background:#fee2e2}
-small{color:#555}</style></head><body><div class="card">
+<style>*{box-sizing:border-box}body{font-family:Inter,"Segoe UI",Arial,sans-serif;background:radial-gradient(ellipse at 15% 10%,#dceaff 0,transparent 36%),linear-gradient(135deg,#f5f8fc,#eaf0f8);display:flex;justify-content:center;align-items:flex-start;min-height:100vh;padding:60px 18px;color:#17233b}
+.card{background:rgba(255,255,255,.97);padding:34px;border:1px solid #e3eaf3;border-radius:18px;width:min(100%,430px);box-shadow:0 24px 70px #20385c1c}
+h2{margin:0 0 20px;font-size:27px;letter-spacing:-.6px;color:#14233d}
+input{width:100%;padding:12px 14px;margin:9px 0;border:1px solid #d5deea;border-radius:9px;background:#fbfdff;font:inherit;color:#17233b}
+input:focus{outline:none;border-color:#3979d6;box-shadow:0 0 0 3px #3979d61c}
+button{width:100%;padding:12px;margin-top:9px;border:0;border-radius:9px;background:linear-gradient(135deg,#2867c7,#174b9b);color:#fff;font-size:15px;font-weight:650;cursor:pointer}
+button:hover{filter:brightness(1.05);box-shadow:0 8px 18px #183b7026}
+#msg{margin-top:12px;padding:10px;border-radius:8px;display:none}.ok{background:#effaf4;color:#17643a}.bad{background:#fff1f0;color:#a52c27}
+small{color:#748197}a{color:#245fae;text-decoration:none}a:hover{text-decoration:underline}
+@media(max-width:480px){body{padding:20px 12px}.card{padding:25px 20px}}
+body{background:#080b12;color:#e5e7eb}
+.card{background:#111827;border-color:#263247;box-shadow:0 24px 70px #0006}
+h2{color:#f3f6fb}
+input{background:#0b1220;border-color:#334155;color:#e5e7eb}
+a{color:#93c5fd}
+#msg.ok{background:#10271d;color:#bbf7d0}
+#msg.bad{background:#351b20;color:#fecaca}
+small{color:#9aa8bb}</style></head><body><div class="card">
 <h2>Create account</h2>
 <input id="u" type="text" placeholder="Username (3-20 letters, numbers, _)">
 <input id="p" type="password" placeholder="Password (at least 6 characters)">
@@ -362,12 +397,21 @@ document.getElementById('go').onclick=async()=>{
 </script></body></html>"""
 
 CHALLENGE = """<!doctype html><html><head><meta charset="utf-8"><title>Verification</title>
-<style>body{font-family:Arial,sans-serif;background:#f1f3f6;display:flex;justify-content:center;padding-top:80px}
-.card{background:#fff;padding:30px;border-radius:10px;width:400px;box-shadow:0 2px 10px #0002;text-align:center}
-.q{font-size:28px;font-weight:bold;margin:18px 0}
-input{padding:10px;font-size:18px;width:120px;text-align:center}
-button{padding:11px 22px;border:0;border-radius:6px;background:#2563eb;color:#fff;font-size:15px;cursor:pointer;margin-left:6px}
-#msg{margin-top:14px;color:#b91c1c;min-height:20px}small{color:#555}</style></head><body><div class="card">
+<style>*{box-sizing:border-box}body{font-family:Inter,"Segoe UI",Arial,sans-serif;background:radial-gradient(ellipse at 15% 10%,#dceaff 0,transparent 36%),linear-gradient(135deg,#f5f8fc,#eaf0f8);display:flex;justify-content:center;align-items:flex-start;min-height:100vh;padding:76px 18px;color:#17233b}
+.card{background:rgba(255,255,255,.97);padding:36px;border:1px solid #e3eaf3;border-radius:18px;width:min(100%,440px);box-shadow:0 24px 70px #20385c1c;text-align:center}
+h2{margin:0 0 14px;color:#14233d}.q{font-size:30px;font-weight:750;color:#205db2;margin:22px 0;padding:16px;background:#f2f7ff;border:1px solid #d8e6fa;border-radius:12px}
+input{padding:12px;font-size:18px;width:140px;text-align:center;border:1px solid #d5deea;border-radius:9px}
+input:focus{outline:none;border-color:#3979d6;box-shadow:0 0 0 3px #3979d61c}
+button{padding:12px 22px;border:0;border-radius:9px;background:linear-gradient(135deg,#2867c7,#174b9b);color:#fff;font-size:15px;font-weight:650;cursor:pointer;margin-left:6px}
+#msg{margin-top:14px;color:#a52c27;min-height:20px}small{color:#748197}
+@media(max-width:480px){body{padding:30px 12px}.card{padding:26px 20px}}body{background:#080b12;color:#e5e7eb}
+.card{background:#111827;border-color:#263247;box-shadow:0 24px 70px #0006}
+h2{color:#f3f6fb}
+p{color:#b8c2d1}
+.q{background:#172438;border-color:#2b4668;color:#93c5fd}
+input{background:#0b1220;border-color:#334155;color:#e5e7eb}
+small{color:#9aa8bb}
+</style></head><body><div class="card">
 <h2>Quick verification</h2>
 <p>Your behaviour looked uncertain (risk score {{ '%.2f'|format(risk) }}, between 0.35 and 0.70),
 so please prove you are a person.</p>
@@ -388,35 +432,59 @@ document.getElementById('a').addEventListener('keydown',e=>{if(e.key==='Enter')c
 RESULT = """<!doctype html><html><head><meta charset="utf-8"><title>Detection Dashboard</title>
 <style>
 *{box-sizing:border-box}
-body{font-family:Arial,sans-serif;background:#eef1f6;margin:0;color:#111}
-.top{background:#111827;color:#fff;padding:14px 28px;display:flex;justify-content:space-between;align-items:center}
-.top a{color:#93c5fd;text-decoration:none;margin-left:18px;font-size:14px}
-.wrap{max-width:1150px;margin:auto;padding:22px}
-.grid{display:grid;gap:16px;margin-bottom:16px}
+body{font-family:Inter,"Segoe UI",Arial,sans-serif;background:radial-gradient(ellipse at 12% 0,#e4efff 0,transparent 30%),#f3f6fa;margin:0;color:#17233b}
+.top{background:linear-gradient(110deg,#14233d,#203f6c);color:#fff;padding:17px max(24px,calc((100vw - 1200px)/2));display:flex;justify-content:space-between;align-items:center;gap:20px;box-shadow:0 5px 20px #14233d20}
+.top b{font-size:17px;letter-spacing:.1px}
+.top a{color:#d7e7ff;text-decoration:none;margin-left:22px;font-size:14px;transition:color .15s}
+.top a:hover{color:#fff;text-decoration:underline}
+.wrap{max-width:1200px;margin:auto;padding:28px 24px 44px}
+.grid{display:grid;gap:18px;margin-bottom:18px}
 .g4{grid-template-columns:repeat(auto-fit,minmax(210px,1fr))}
-.g2{grid-template-columns:repeat(auto-fit,minmax(430px,1fr))}
-.card{background:#fff;border-radius:10px;padding:18px;box-shadow:0 2px 8px #0001}
-.card h3{margin:0 0 10px 0;font-size:16px}
-.kpi small{color:#666;display:block;margin-bottom:6px}
-.kpi .big{font-size:30px;font-weight:bold}
+.g2{grid-template-columns:repeat(auto-fit,minmax(min(100%,390px),1fr))}
+.card{background:rgba(255,255,255,.96);border:1px solid #e4eaf2;border-radius:14px;padding:21px;box-shadow:0 8px 26px #20385c0b}
+.card h3{margin:0 0 12px;font-size:16px;color:#1b2c47;letter-spacing:-.15px}
+.kpi small{color:#718096;display:block;margin-bottom:7px}
+.kpi .big{font-size:32px;font-weight:750;letter-spacing:-.8px}
 .allow{color:#16a34a}.challenge{color:#ca8a04}.block{color:#dc2626}
-.verdict{border-left:8px solid}
+.verdict{border-left:5px solid}
 .verdict.allow{border-color:#16a34a}.verdict.challenge{border-color:#ca8a04}.verdict.block{border-color:#dc2626}
-canvas{width:100%;border:1px solid #e5e7eb;border-radius:6px;background:#fafafa}
-.bar{height:22px;border-radius:11px;background:linear-gradient(90deg,#16a34a 35%,#ca8a04 35% 70%,#dc2626 70%);position:relative;margin:14px 0 6px}
-.pin{position:absolute;top:-6px;width:4px;height:34px;background:#111}
-small{color:#555}
-table{border-collapse:collapse;width:100%;font-size:13px}
-th,td{border-bottom:1px solid #e5e7eb;padding:7px 8px;text-align:left;vertical-align:top}
-th{background:#f3f4f6}.h{color:#16a34a;font-weight:bold}.b{color:#dc2626;font-weight:bold}
-.ev{display:flex;align-items:center;margin:6px 0;font-size:13px}
-.ev .nm{width:200px}.ev .track{flex:1;height:14px;background:#f3f4f6;border-radius:7px;position:relative}
-.ev .mid{position:absolute;left:50%;top:0;bottom:0;width:2px;background:#9ca3af}
+canvas{width:100%;border:1px solid #e1e8f1;border-radius:9px;background:#fbfcfe}
+.bar{height:20px;border-radius:11px;background:linear-gradient(90deg,#24a36a 35%,#e0a52e 35% 70%,#d9534f 70%);position:relative;margin:16px 0 8px}
+.pin{position:absolute;top:-6px;width:3px;height:32px;background:#17233b;border-radius:3px}
+small{color:#718096;line-height:1.5}
+table{border-collapse:collapse;width:100%;font-size:13px;border:1px solid #e7edf4;border-radius:8px;overflow:hidden}
+th,td{border-bottom:1px solid #e8edf4;padding:10px 11px;text-align:left;vertical-align:top}
+th{background:#f4f7fb;color:#43536b;font-weight:650}.h{color:#14804a;font-weight:700}.b{color:#c53737;font-weight:700}
+.ev{display:flex;align-items:center;gap:12px;margin:10px 0;font-size:13px}
+.ev .nm{width:190px;color:#43536b}.ev .track{flex:1;height:14px;background:#f0f3f8;border-radius:7px;position:relative}
+.ev .mid{position:absolute;left:50%;top:0;bottom:0;width:2px;background:#aeb9c8}
 .ev .fill{position:absolute;top:0;bottom:0;border-radius:7px}
-.calc{background:#f8fafc;border-radius:8px;padding:10px;margin:8px 0;font-size:14px;line-height:1.6}
-.btn{display:inline-block;background:#2563eb;color:#fff;padding:10px 18px;border-radius:6px;text-decoration:none}
-.note{padding:12px 16px;border-radius:8px;margin-bottom:16px;font-size:14px}
-.ok{background:#dcfce7}.warn{background:#fef9c3}.bad{background:#fee2e2}
+.calc{background:#f5f8fc;border:1px solid #e8edf4;border-radius:9px;padding:13px;margin:9px 0;font-size:14px;line-height:1.65}
+.btn{display:inline-block;background:linear-gradient(135deg,#2867c7,#174b9b);color:#fff;padding:11px 18px;border-radius:9px;text-decoration:none;font-weight:650;transition:filter .15s}
+.btn:hover{filter:brightness(1.08)}
+.note{padding:13px 16px;border:1px solid transparent;border-radius:10px;margin-bottom:16px;font-size:14px;line-height:1.5}
+.ok{background:#effaf4;border-color:#c8ecd6;color:#17643a}.warn{background:#fff8e7;border-color:#f3dfaa;color:#795710}.bad{background:#fff1f0;border-color:#ffd1cd;color:#a52c27}
+.wrap>br{display:none}
+@media(max-width:680px){.top{padding:15px 18px;align-items:flex-start;flex-direction:column;gap:10px}.top a{margin:0 18px 0 0}.wrap{padding:18px 13px 30px}.card{padding:17px}.g4{grid-template-columns:repeat(2,minmax(0,1fr))}.kpi .big{font-size:27px}.ev .nm{width:145px}}
+@media(max-width:420px){.g4{grid-template-columns:1fr}.ev{gap:7px}.ev .nm{width:120px;font-size:12px}}
+body{background:#080b12;color:#e5e7eb}
+.top{background:linear-gradient(110deg,#05070c,#111b2b);box-shadow:0 5px 20px #0006}
+.card{background:#111827;border-color:#263247;box-shadow:0 8px 26px #0003}
+.card h3{color:#f3f6fb}
+.kpi small,small{color:#9aa8bb}
+canvas{background:#0b1220;border-color:#2b384d}
+.pin{background:#f3f6fb}
+table{border-color:#29364a}
+th,td{border-color:#29364a}
+th{background:#182337;color:#d4deeb}
+.ev .nm{color:#c2ccda}
+.ev .track{background:#202b3d}
+.ev .mid{background:#64748b}
+.calc{background:#0d1523;border-color:#29364a;color:#d6deea}
+.note.ok{background:#10271d;border-color:#24583a;color:#bbf7d0}
+.note.warn{background:#302714;border-color:#69521e;color:#f5d98e}
+.note.bad{background:#351b20;border-color:#71323a;color:#fecaca}
+a{color:#93c5fd}
 </style></head><body>
 <div class="top"><b>Bot Detection Dashboard</b>
  <div><a href="/">New login</a><a href="/history">History</a><a href="/data">Training data</a></div></div>
@@ -526,8 +594,8 @@ th{background:#f3f4f6}.h{color:#16a34a;font-weight:bold}.b{color:#dc2626;font-we
 <script>
 const D = {{ series|tojson }};
 function setup(id){const c=document.getElementById(id);return [c,c.getContext('2d')];}
-function axes(ctx,c,txt){ctx.fillStyle='#555';ctx.font='12px Arial';ctx.fillText(txt,8,14);}
-function empty(ctx,c,msg){ctx.fillStyle='#888';ctx.font='15px Arial';ctx.fillText(msg,20,c.height/2);}
+function axes(ctx,c,txt){ctx.fillStyle='#cbd5e1';ctx.font='12px Arial';ctx.fillText(txt,8,14);}
+function empty(ctx,c,msg){ctx.fillStyle='#94a3b8';ctx.font='15px Arial';ctx.fillText(msg,20,c.height/2);}
 function bars(id,K,color,title,xl){const [c,ctx]=setup(id);
  if(K.length<1){empty(ctx,c,'No data recorded');return;}
  const m=Math.max(...K)||1,L=45,B=28,T=22,w=(c.width-L-15)/K.length;
@@ -540,7 +608,7 @@ function bars(id,K,color,title,xl){const [c,ctx]=setup(id);
  const x0=Math.min(...xs),x1=Math.max(...xs),y0=Math.min(...ys),y1=Math.max(...ys);
  const pad=25,sx=(c.width-2*pad)/Math.max(x1-x0,1),sy=(c.height-2*pad)/Math.max(y1-y0,1),s=Math.min(sx,sy);
  const X=x=>pad+(x-x0)*s,Y=y=>pad+(y-y0)*s;
- ctx.setLineDash([6,5]);ctx.strokeStyle='#9ca3af';ctx.beginPath();
+ ctx.setLineDash([6,5]);ctx.strokeStyle='#64748b';ctx.beginPath();
  ctx.moveTo(X(P[0][0]),Y(P[0][1]));ctx.lineTo(X(P[P.length-1][0]),Y(P[P.length-1][1]));ctx.stroke();
  ctx.setLineDash([]);ctx.strokeStyle='#2563eb';ctx.lineWidth=2;ctx.beginPath();
  P.forEach((p,i)=>i?ctx.lineTo(X(p[0]),Y(p[1])):ctx.moveTo(X(p[0]),Y(p[1])));ctx.stroke();
@@ -551,7 +619,7 @@ function bars(id,K,color,title,xl){const [c,ctx]=setup(id);
  if(S.length<2){empty(ctx,c,'No speed data');return;}
  const t1=S[S.length-1][0]||1,vm=Math.max(...S.map(s=>s[1]))||1,L=45,B=28,T=22,R=15;
  const X=t=>L+(t/t1)*(c.width-L-R),Y=v=>c.height-B-(v/vm)*(c.height-B-T);
- ctx.strokeStyle='#ddd';ctx.beginPath();ctx.moveTo(L,T);ctx.lineTo(L,c.height-B);ctx.lineTo(c.width-R,c.height-B);ctx.stroke();
+ ctx.strokeStyle='#334155';ctx.beginPath();ctx.moveTo(L,T);ctx.lineTo(L,c.height-B);ctx.lineTo(c.width-R,c.height-B);ctx.stroke();
  ctx.strokeStyle='#7c3aed';ctx.lineWidth=2;ctx.beginPath();
  S.forEach((s,i)=>i?ctx.lineTo(X(s[0]),Y(s[1])):ctx.moveTo(X(s[0]),Y(s[1])));ctx.stroke();
  axes(ctx,c,'speed (px/s)  max '+Math.round(vm));ctx.fillText('time (s) -> '+t1.toFixed(2),c.width-150,c.height-8);
@@ -561,9 +629,20 @@ bars('holds',D.holds,'#f59e0b','key hold time (s)','key number ->');
 </script></body></html>"""
 
 DASH = """<!doctype html><html><head><meta charset="utf-8"><title>History</title>
-<style>body{font-family:Arial;padding:30px}table{border-collapse:collapse}
-td,th{border:1px solid #ccc;padding:6px 12px}</style></head><body>
-<h2>History of attempts</h2><a href="/">Back</a><br><br>
+<style>*{box-sizing:border-box}body{font-family:Inter,"Segoe UI",Arial,sans-serif;background:radial-gradient(ellipse at 12% 0,#e4efff 0,transparent 30%),#f3f6fa;color:#17233b;margin:0;padding:38px max(18px,calc((100vw - 1200px)/2))}
+h2{color:#14233d;font-size:28px;letter-spacing:-.6px;margin:0 0 12px}a{color:#245fae;text-decoration:none;font-weight:600}a:hover{text-decoration:underline}
+table{border-collapse:collapse;width:100%;margin-top:22px;background:#fff;border:1px solid #e4eaf2;border-radius:12px;overflow:hidden;box-shadow:0 8px 26px #20385c0b}
+td,th{border-bottom:1px solid #e8edf4;padding:11px 13px;text-align:left;font-size:13px}th{background:#f4f7fb;color:#43536b;font-weight:700}
+tr:last-child td{border-bottom:0}tr:hover td{background:#f8fafd}
+body{background:#080b12;color:#e5e7eb}
+h2{color:#f3f6fb}
+a{color:#93c5fd}
+table{background:#111827;border-color:#263247;box-shadow:0 8px 26px #0003}
+td,th{border-color:#29364a}
+th{background:#182337;color:#d4deeb}
+tr:hover td{background:#172235}
+@media(max-width:700px){body{padding:24px 14px}table{display:block;overflow-x:auto;white-space:nowrap}}</style></head><body>
+<h2>History of attempts</h2><a href="/">Back to login</a><br><br>
 <table><tr><th>Time</th><th>User</th><th>Source</th><th>Risk</th><th>Result</th><th>Final outcome</th><th>Saved as data</th><th>Details</th></tr>
 {% for a in attempts %}<tr><td>{{a.time}}</td><td>{{a.user}}</td><td>{{a.source}}</td>
 <td>{{'%.3f'|format(a.risk)}}</td><td>{{a.label}} ({{a.decision}})</td>
@@ -572,13 +651,30 @@ td,th{border:1px solid #ccc;padding:6px 12px}</style></head><body>
 </table></body></html>"""
 
 DATA = """<!doctype html><html><head><meta charset="utf-8"><title>Training data</title>
-<style>body{font-family:Arial;background:#eef1f6;margin:0;color:#111}
-.wrap{max-width:900px;margin:auto;padding:25px}
-.card{background:#fff;border-radius:10px;padding:20px;margin-bottom:16px;box-shadow:0 2px 8px #0001}
-table{border-collapse:collapse;width:100%;font-size:14px}th,td{border-bottom:1px solid #e5e7eb;padding:7px;text-align:left}
-th{background:#f3f4f6}button,.btn{background:#2563eb;color:#fff;border:0;border-radius:6px;padding:10px 18px;font-size:15px;cursor:pointer;text-decoration:none;display:inline-block}
-#msg{margin-top:12px;padding:12px;border-radius:6px;display:none;background:#dcfce7}
-small{color:#555}</style></head><body><div class="wrap">
+<style>*{box-sizing:border-box}body{font-family:Inter,"Segoe UI",Arial,sans-serif;background:radial-gradient(ellipse at 12% 0,#e4efff 0,transparent 30%),#f3f6fa;margin:0;color:#17233b}
+.wrap{max-width:1100px;margin:auto;padding:34px 24px 48px}
+.wrap>a:first-child{color:#245fae;text-decoration:none;font-weight:650}.wrap>a:first-child:hover{text-decoration:underline}
+h2{font-size:28px;letter-spacing:-.6px;color:#14233d;margin:22px 0}
+.card{background:rgba(255,255,255,.97);border:1px solid #e4eaf2;border-radius:14px;padding:22px;margin-bottom:18px;box-shadow:0 8px 26px #20385c0b}
+.card h3{margin:0 0 12px;color:#1b2c47;font-size:17px}
+.card p{line-height:1.6;color:#53627a}
+table{border-collapse:collapse;width:100%;font-size:14px;border:1px solid #e7edf4;border-radius:8px;overflow:hidden}
+th,td{border-bottom:1px solid #e8edf4;padding:10px 11px;text-align:left}th{background:#f4f7fb;color:#43536b}
+button,.btn{background:linear-gradient(135deg,#2867c7,#174b9b);color:#fff;border:0;border-radius:9px;padding:11px 18px;font-size:14px;font-weight:650;cursor:pointer;text-decoration:none;display:inline-block}
+button:hover,.btn:hover{filter:brightness(1.08)}button:disabled{opacity:.65;cursor:wait}
+#msg{margin-top:12px;padding:12px;border:1px solid #c8ecd6;border-radius:9px;display:none;background:#effaf4;color:#17643a}
+small{color:#718096;line-height:1.5}
+body{background:#080b12;color:#e5e7eb}
+.card{background:#111827;border-color:#263247;box-shadow:0 8px 26px #0003}
+h2,.card h3{color:#f3f6fb}
+.card p{color:#b8c2d1}
+.wrap>a:first-child{color:#93c5fd}
+table{background:#111827;border-color:#263247}
+th,td{border-color:#29364a}
+th{background:#182337;color:#d4deeb}
+#msg{background:#10271d;border-color:#24583a;color:#bbf7d0}
+small{color:#9aa8bb}
+@media(max-width:650px){.wrap{padding:22px 13px 32px}.card{padding:17px}table{display:block;overflow-x:auto;white-space:nowrap}}</style></head><body><div class="wrap">
 <a href="/">Back to login</a>
 <h2>Training data</h2>
 <div class="card"><h3>Project report</h3>
@@ -702,10 +798,22 @@ def challenge(rid):
 
 
 USERS_PAGE = """<!doctype html><html><head><meta charset="utf-8"><title>User database</title>
-<style>body{font-family:Arial;background:#eef1f6;margin:0}.wrap{max-width:1000px;margin:auto;padding:25px}
-.card{background:#fff;border-radius:10px;padding:20px;margin-bottom:16px;box-shadow:0 2px 8px #0001}
-table{border-collapse:collapse;width:100%;font-size:13px}th,td{border-bottom:1px solid #e5e7eb;padding:7px;text-align:left}
-th{background:#f3f4f6}code{font-size:11px;color:#555}</style></head><body><div class="wrap">
+<style>*{box-sizing:border-box}body{font-family:Inter,"Segoe UI",Arial,sans-serif;background:radial-gradient(ellipse at 12% 0,#e4efff 0,transparent 30%),#f3f6fa;margin:0;color:#17233b}
+.wrap{max-width:1100px;margin:auto;padding:34px 24px 48px}.wrap>a{color:#245fae;text-decoration:none;font-weight:650}.wrap>a:hover{text-decoration:underline}
+.card{background:rgba(255,255,255,.97);border:1px solid #e4eaf2;border-radius:14px;padding:22px;margin:18px 0;box-shadow:0 8px 26px #20385c0b}
+.card h2{color:#14233d;font-size:24px;margin:0 0 12px}
+table{border-collapse:collapse;width:100%;font-size:13px;border:1px solid #e7edf4;border-radius:8px;overflow:hidden}
+th,td{border-bottom:1px solid #e8edf4;padding:10px;text-align:left}th{background:#f4f7fb;color:#43536b}
+code{font-size:11px;color:#53627a}small{color:#718096}
+body{background:#080b12;color:#e5e7eb}
+.card{background:#111827;border-color:#263247;box-shadow:0 8px 26px #0003}
+.card h2{color:#f3f6fb}
+.wrap>a{color:#93c5fd}
+table{background:#111827;border-color:#263247}
+th,td{border-color:#29364a}
+th{background:#182337;color:#d4deeb}
+code{color:#c2ccda}small{color:#9aa8bb}
+@media(max-width:700px){.wrap{padding:22px 13px}.card{padding:16px}table{display:block;overflow-x:auto;white-space:nowrap}}</style></head><body><div class="wrap">
 <a href="/">Back to login</a>
 <div class="card"><h2>User database (users.db)</h2>
 <p><small>Passwords are stored as one-way hashes, so even the database owner cannot read them.</small></p>
